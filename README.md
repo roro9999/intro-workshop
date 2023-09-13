@@ -175,9 +175,165 @@ You can use the `cat` command to see your edited file.
 
 Vim is extremely powerful, and many people swear by it. I find it most useful to make small edits to things when I'm already in the command line; if I'm doing something more substantive, I'll use my code editor (I prefer VS Code).
 
-## Using Git on the command line
+To end this section, let's go back home with `cd ~`
 
-Now that we're decently comfortable using a command line to move around and edit things, let's start using Git!
+## Using Git and Github on the command line
+
+Now that we're decently comfortable using a command line to move around and edit things, let's start using Git and Github!
+
+### Configuring your terminal to connect to Github
+
+As of recently, Github requires secure authentication using `ssh` (which stands for **s**ecure **sh**ell) when interacting via a command line. We're going to set that up now.
+
+#### Check for existing keys
+
+You can check if you already have an SSH key set up by checking your `~/.ssh` directory:
+
+```shell
+ls -al ~/.ssh
+```
+
+Chances are you won't have any files listed. If you do have any, you can `cat` out the public key in `<keyname>.pub` and provide that to Github later.
+
+#### Generate a new SSH key
+
+If you don't have any keys from the previous step, it's time to generate some.
+
+Enter the following SSH command, substituting the email address for **the email you used to sign up for Github**:
+
+```shell
+ssh-keygen -t rsa -C "your_email@example.com"
+```
+
+The command will prompt you for an alternate file location and a password; it's okay to accept the defaults by pressing Enter. (If you'd like to password protect your key, go ahead - just remember your password!)
+
+Finally, check for the new key files using  `ls`:
+
+```shell
+ls -al ~/.ssh
+```
+
+You should see `id_rsa` and `id_rsa.pub` listed if you accepted the defaults.
+
+#### Add the new SSH key to Github
+
+Next, hop over to your browser and go to [https://github.com/settings/keys](https://github.com/settings/keys). This is where you'll enter your SSH key to pair your terminal with Github.
+
+Click "New SSH Key" and give it a helpful name (your computer name is always a good idea).
+
+Now, switch back to your terminal. Cat out your **public** SSH key at `id_rsa.pub`:
+
+```shell
+cat ~/.ssh/id_rsa.pub
+```
+
+Copy the printed key to your clipboard and paste it into the browser dialog, then click "Add SSH Key".
+
+Voila! You're done! Time to start using Github!
+
+A note **NEVER, EVER, EVER SEND YOUR PRIVATE SSH KEY ANYWHERE! THAT'S LIKE SHARING YOUR PASSWORD!**
+
+### Creating a new repository on Github
+
+Now that we've got a working Github connection, let's use it! Let's start by creating a new repository.
+
+There are several ways to do this, but I find the easiest is just to do it on Github itself. They have handy tools to set up licensing and a README automatically.
+
+Go to "Your repositories" in the right sidebar and click "New". Give it a name, a short description, tick the box to add a README file, and choose a license if you like. Then, click "Create repository".
+
+Once the repository is created, we need to **clone** it to our command line. We can do this by clicking the big green "Code" button in the top right of the repository view. Go to the "SSH" tab within the drop down that appears, then copy the URL provided.
+
+### Cloning your repository to your local machine
+
+Then, go back to your terminal. Make sure you're in your home directory:
+
+```shell
+cd ~
+```
+
+For organization's sake, we're going to create a new directory called `git` using the command line. Use the `mkdir` command to do that:
+
+```shell
+mkdir git
+```
+
+Once created, `cd` into it:
+
+```shell
+cd git
+```
+
+Next, we're going to **clone** your new repository to your terminal. This effectively creates a copy of the files in the repository local to your machine, allowing you to use and manipulate them using software available on your local machine.
+
+```shell
+git clone git@github.com:<username>/<repo-name>.git
+```
+
+If you `ls`, you should see a new directory in your home folder with your new repo's name! `cd` into it.
+
+```shell
+cd <repo-name>
+```
+
+Now, you can make whatever changes you want. Add files, edit existing ones, etc.
+
+### Managing your work with Git
+
+Once you're satisfied with your changes, and want to make them available on the source repository on Github, it's time to begin using Git in earnest.
+
+To start, let's try using `git status`:
+
+```shell
+git status
+```
+
+This command tells you about any changes that have been made to any files in a directory that is _managed_ by Git. This will look different depending on what exactly you changed about your repository. In my case, I changed `README.md`.
+
+Git won't do anything with these changes just yet. To tell Git that we want these changes pushed to our remote repository, we have to create a **commit**.
+
+To start that process, we're going to use `git add`:
+
+```shell
+git add README.md
+```
+
+This tells Git that we'd like to add the changes present in `README.md` to a new commit.
+
+Note that `git add` takes any file pattern as input. We could also do `git add .` to add all changes present in the current directory, for example. (Be careful you don't add files you don't mean to, though!)
+
+You can use `git add` as much as you want to add new changes. Once you've added all the files you want to your new commit, it's time to actually _create_ the commit. This can be done with `git commit`.
+
+But we can't just use `git commit`! We also have to provide a _commit message_. This should be a concise description of what the commit changes. In my case, something like "Update README.md" should suffice.
+
+```shell
+git commit -m "Update README.md"
+```
+
+This command will create the new commit!
+
+Finally, we need to _push_ our new commit to Github. We can do this with `git push`.
+
+```shell
+git push
+```
+
+Since we set up our SSH keys already, this should work straight away!
+
+To check your work, go to Github on the web. You should see your commit message near the top of your repository! If you click on it, Github will give you a handy breakdown of the changes!
+
+With that, you've just pushed a commit to Github! Pat yourself on the back!
+
+Let's recap the workflow again:
+
+- Clone your repo to your local machine (you should only need to do this once)
+- Make changes as you see fit
+- Add the changes to Git with `git add`
+- Commit the changes with `git commit`
+- Push the changes to the remote repo with `git push`
+
+There's a ton more you can do with Git and Github, but those are the basics for today. If you're interested in a follow-up advanced Git workshop, let me know! Maybe we can make it happen!
+
+Please feel free to ask questions, and thank you for following along!
 
 ## Credits
 
