@@ -2,6 +2,8 @@
 
 Hello, Spark 2024!
 
+Hello again!
+
 Welcome! This workshop is intended to provide a basic overview of both the Linux command line and how to set up and use Git. They may seem a little complicated now, but both are very widely used in software and data science, and learning how to use them will be extremely crucial skills. Let's get started!
 
 ## Initial setup
